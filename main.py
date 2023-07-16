@@ -93,4 +93,44 @@ class BeeElephant:
 
 # 3 Task
 
+class Bus:
+    def __init__(self, speed, max_seats, max_speed):
+        self.speed = speed
+        self.max_seats = max_seats
+        self.max_speed = max_speed
+        self.passengers = []
+        self.free_seats = True
+        self.seats = {}
 
+    def add_passenger(self, *passenger_names):
+        if len(self.passengers) + len(passenger_names) > self.max_seats:
+            print("No seats available")
+            return
+        for name in passenger_names:
+            self.passengers.append(name)
+        self.update_seats()
+
+    def remove_passenger(self, *passenger_names):
+        for name in passenger_names:
+            if name in self.passengers:
+                self.passengers.remove(name)
+        self.update_seats()
+
+    def increase_speed(self, value):
+        if self.speed + value > self.max_speed:
+            print("Overcome speed limit")
+            return
+        self.speed += value
+
+    def decrease_speed(self, value):
+        if self.speed - value < 0:
+            print("Speed can't be below zero")
+            return
+        self.speed -= value
+
+    def update_seats(self):
+        self.seats = {i: name for i, name in enumerate(self.passengers, start=1)}
+        if len(self.passengers) == self.max_seats:
+            self.free_seats = False
+        else:
+            self.free_seats = True
